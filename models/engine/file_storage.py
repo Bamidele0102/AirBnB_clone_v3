@@ -34,6 +34,28 @@ class FileStorage:
             return new_dict
         return self.__objects
 
+    def get(self, cls, id):
+        """
+        Fetches specific object.
+        :param cls: Class of object.
+        :param id: ID of object.
+        :return: Found object or None.
+        """
+        key = "{}.{}".format(cls.__name__, id)
+        return self.__objects.get(key)
+
+    def count(self, cls=None):
+        """
+        Count of how many instances of a class.
+        :param cls: Class.
+        :return: Count of instances of a class.
+        """
+        if cls:
+            return len([k for k in self.__objects.keys()
+                        if k.startswith(cls.__name__)])
+        else:
+            return len(self.__objects.keys())
+
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
         if obj is not None:
@@ -55,7 +77,7 @@ class FileStorage:
                 jo = json.load(f)
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except:
+        except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
