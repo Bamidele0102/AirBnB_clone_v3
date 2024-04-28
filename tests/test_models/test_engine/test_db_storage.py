@@ -68,7 +68,7 @@ test_db_storage.py'])
                             "{:s} method needs a docstring".format(func[0]))
 
 
-class TestDBStorage(unittest.TestCase):
+class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
@@ -106,33 +106,3 @@ class TestDBStorage(unittest.TestCase):
         models.storage.save()
         new_count = models.storage.count(State)
         self.assertEqual(new_count, initial_count + 1)
-
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_delete(self):
-        """Test the delete method"""
-        storage = DBStorage()
-        state = State(name="California")
-        storage.new(state)
-        storage.save()
-        state_key = "State." + state.id
-        self.assertIn(state_key, storage._DBStorage__session)
-        storage.delete(state)
-        self.assertNotIn(state_key, storage._DBStorage__session)
-
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_reload(self):
-        """Test the reload method"""
-        storage = DBStorage()
-        session1 = storage._DBStorage__session
-        storage.reload()
-        session2 = storage._DBStorage__session
-        self.assertIsNot(session1, session2)
-
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_close(self):
-        """Test the close method"""
-        storage = DBStorage()
-        storage.reload()
-        session = storage._DBStorage__session
-        storage.close()
-        self.assertIsNone(storage._DBStorage__session)

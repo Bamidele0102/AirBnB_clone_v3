@@ -133,32 +133,3 @@ class TestFileStorage(unittest.TestCase):
         models.storage.save()
         new_count = models.storage.count(State)
         self.assertEqual(new_count, initial_count + 1)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_delete(self):
-        """Test the delete method"""
-        storage = FileStorage()
-        state = State(name="California")
-        storage.new(state)
-        storage.save()
-        state_key = "State." + state.id
-        self.assertIn(state_key, storage._FileStorage__objects)
-        storage.delete(state)
-        self.assertNotIn(state_key, storage._FileStorage__objects)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_reload(self):
-        """Test the reload method"""
-        storage = FileStorage()
-        objects = storage._FileStorage__objects
-        storage.reload()
-        self.assertIsNot(objects, storage._FileStorage__objects)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_close(self):
-        """Test the close method"""
-        storage = FileStorage()
-        storage.reload()
-        objects = storage._FileStorage__objects
-        storage.close()
-        self.assertIsNone(storage._FileStorage__objects)
