@@ -106,3 +106,7 @@ class TestDBStorage(unittest.TestCase):
         models.storage.save()
         new_count = models.storage.count(State)
         self.assertEqual(new_count, initial_count + 1)
+
+
+if __name__ == "__main__":
+    unittest.main()
