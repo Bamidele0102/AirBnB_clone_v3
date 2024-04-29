@@ -1,30 +1,27 @@
 #!/usr/bin/python3
-"""
-Creates a route /status on the object app_views
-that returns a JSON: "status": "OK"
-"""
-
+"""Create a flask app that starts an API"""
 from flask import jsonify
 from api.v1.views import app_views
 from models import storage
 
 
-@app_views.route('/status', strict_slashes=False)
-def get_status():
-    """Returns API status."""
-    return jsonify({"status": "OK"})
+# Create a route /status on the object app_views that returns JSON
+@app_views.route("/status")
+def api_status():
+    """A route that returns status OK"""
+    response = {"status": "OK"}
+    return jsonify(response)
 
 
-# Create an endpoint that retrieves the number of each objects by type:
-@app_views.route('/stats', strict_slashes=False)
+@app_views.route("/stats")
 def get_stats():
-    """Retrieves the number of each object type"""
+    """A route that returns status OK"""
     stats = {
-        'amenities': storage.count('Amenity'),
-        'cities': storage.count('City'),
-        'places': storage.count('Place'),
-        'reviews': storage.count('Review'),
-        'states': storage.count('State'),
-        'users': storage.count('User')
+            "amenities": storage.count("Amenity"),
+            "cities": storage.count("City"),
+            "places": storage.count("Place"),
+            "reviews": storage.count("Review"),
+            "states": storage.count("State"),
+            "users": storage.count("User"),
     }
     return jsonify(stats)
