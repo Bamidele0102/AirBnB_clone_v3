@@ -1,8 +1,3 @@
-#!/usr/bin/python3
-"""
-Contains class BaseModel
-"""
-
 from datetime import datetime
 import models
 from os import getenv
@@ -58,9 +53,11 @@ class BaseModel:
         models.storage.new(self)
         models.storage.save()
 
-    def to_dict(self):
+    def to_dict(self, exclude_password=True):
         """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()
+        if exclude_password and "password" in new_dict:
+            del new_dict["password"]
         if "created_at" in new_dict:
             new_dict["created_at"] = new_dict["created_at"].strftime(time)
         if "updated_at" in new_dict:
