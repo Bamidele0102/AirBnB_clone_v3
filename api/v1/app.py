@@ -8,6 +8,7 @@ from flask import Flask, jsonify  # Import jsonify from flask
 from api.v1.views import app_views  # Import app_views BP from api.v1.views
 from models import storage  # Imports the storage instance from models package
 import os
+from flask_cors import CORS
 
 
 # Set up the Flask app
@@ -15,6 +16,10 @@ app = Flask(__name__)
 
 # Register the app_views blueprint to the Flask instance app
 app.register_blueprint(app_views, url_prefix="/api/v1")
+
+
+# Enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
