@@ -16,7 +16,7 @@ def get_status():
 
 
 # Create an endpoint that retrieves the number of each objects by type:
-@app_views.route('/api/v1/stats', methods=['GET'], strict_slashes=False)
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
 def get_stats():
     """Retrieves the number of each object type"""
     stats = {
