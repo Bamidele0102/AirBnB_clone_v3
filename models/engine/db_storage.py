@@ -3,16 +3,14 @@
 Contains the class DBStorage
 """
 
-import models
+from models.base_model import Base
 from models.amenity import Amenity
-from models.base_model import BaseModel, Base
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
 from os import getenv
-import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -32,11 +30,16 @@ class DBStorage:
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(HBNB_MYSQL_USER,
-                                             HBNB_MYSQL_PWD,
-                                             HBNB_MYSQL_HOST,
-                                             HBNB_MYSQL_DB))
+        charset = "latin1"
+        connection_string = (
+            'mysql+mysqldb://{user}:{password}@{host}/{db}?charset={charset}')
+        self.__engine = create_engine(connection_string.format(
+            user=HBNB_MYSQL_USER,
+            password=HBNB_MYSQL_PWD,
+            host=HBNB_MYSQL_HOST,
+            db=HBNB_MYSQL_DB,
+            charset=charset
+        ))
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
