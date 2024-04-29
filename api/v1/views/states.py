@@ -28,7 +28,8 @@ def get_state(state_id):
         abort(404)
 
 
-@app_views.route("/states/<state_id>", methods=["DELETE"], strict_slashes=False)
+@app_views.route("/states/<state_id>", methods=["DELETE"],
+                 strict_slashes=False)
 def delete_state(state_id):
     """Delete a state by ID"""
     state = storage.get(State, state_id)
@@ -62,7 +63,7 @@ def update_state(state_id):
     """Update a state by ID"""
     if request.content_type != "application/json":
         return abort(400, "Not a JSON")
-    
+
     state = storage.get(State, state_id)
     if not state:
         abort(404)
