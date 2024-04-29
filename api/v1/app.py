@@ -4,7 +4,7 @@ Creating a Flask app; and registering blueprint (app_views)
 to the Flask instance app.
 """
 # Import necessary modules
-from flask import Flask
+from flask import Flask, jsonify  # Import jsonify from flask
 from api.v1.views import app_views  # Import app_views BP from api.v1.views
 from models import storage  # Imports the storage instance from models package
 import os
@@ -21,6 +21,14 @@ app.register_blueprint(app_views, url_prefix="/api/v1")
 def teardown_appcontext(exception):
     """Close storage session."""
     storage.close()
+
+
+# Custom 404 error handler
+@app.errorhandler(404)
+def not_found(error):
+    """Handle 404 errors"""
+    response = {"error": "Not found"}
+    return jsonify(response), 404
 
 
 if __name__ == "__main__":
